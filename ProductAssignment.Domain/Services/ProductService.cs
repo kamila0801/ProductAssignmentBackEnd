@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using ProductAssignment.Core;
@@ -18,6 +19,17 @@ namespace ProductAssignment.Domain.Services
         public List<Product> GetAllProducts()
         {
             return _repository.FindAll();
+        }
+
+        public Product Create(Product newProduct)
+        {
+            if (newProduct == null)
+                throw new ArgumentNullException();
+            if (newProduct.Id != 0)
+                throw new InvalidDataException("Id cannot be specified");
+            if(newProduct.Name==null)
+                throw new InvalidDataException("Name must be specified");
+            return _repository.Create(newProduct);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace ProductAssignment.Domain.IRepositories
     public interface IProductRepository
     {
         List<Product> FindAll();
+        Product Create(Product newProduct);
     }
 }

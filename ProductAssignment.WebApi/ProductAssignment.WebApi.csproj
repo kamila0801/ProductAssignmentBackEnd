@@ -5,12 +5,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.12" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+        <PackageReference Include="Moq" Version="4.16.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Controllers" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProductAssignment.Core\ProductAssignment.Core.csproj" />
+      <ProjectReference Include="..\ProductAssignment.DataAccess\ProductAssignment.DataAccess.csproj" />
+      <ProjectReference Include="..\ProductAssignment.Domain\ProductAssignment.Domain.csproj" />
     </ItemGroup>
 
 </Project>
