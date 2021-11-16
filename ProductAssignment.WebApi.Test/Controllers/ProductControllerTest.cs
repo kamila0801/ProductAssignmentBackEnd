@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ProductAssignment.Core;
+using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using ProductAssignment.WebApi.Controllers;
+using ProductAssignment.WebApi.Dtos;
 using Xunit;
 
 namespace ProductAssignment.WebApi.Test.Controllers
@@ -18,8 +21,10 @@ namespace ProductAssignment.WebApi.Test.Controllers
         public ProductControllerTest()
         {
            _mockService = new Mock<IProductService>();
-            _controller = new ProductController(_mockService.Object);
+           _controller = new ProductController(_mockService.Object);
         }
+        
+        #region controller initialization
         
         [Fact]
         public void ProductController_IsOfTypeControllerBase()
@@ -73,6 +78,169 @@ namespace ProductAssignment.WebApi.Test.Controllers
                 () => new ProductController(null));
             Assert.Equal("Product service cannot be null", exception.Message);
         }
+        
+        #endregion
+        
+        #region getAll
+
+        [Fact]
+        public void ProductController_HasGetAllMethod()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetAll".Equals(m.Name));
+            Assert.NotNull(method);
+        }
+        
+        [Fact]
+        public void GetAllMethod_IsPublic()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetAll".Equals(m.Name));
+            Assert.True(method is not null && method.IsPublic);
+        }
+        
+        
+        [Fact]
+        public void GetAllMethod_ReturnsListOfProductsAsActionResult()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetAll".Equals(m.Name));
+            Assert.Equal(typeof(ActionResult<List<Product>>).FullName, method?.ReturnType.FullName);
+        }
+
+        [Fact]
+        public void GetAll_HasHttpGetAttribute()
+        {
+            var methodInfo = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => m.Name == "GetAll");
+            var attr = methodInfo.CustomAttributes
+                .FirstOrDefault(ca => ca.AttributeType.Name == "HttpGetAttribute");
+            Assert.NotNull(attr);
+        }
+
+        [Fact]
+        public void GetAll_CallsServiceOnce()
+        {
+            Filter filter = new Filter {CurrentPage = 1, ItemsPrPage = 2};
+            _controller.GetAll(filter);
+            _mockService.Verify(s=>s.GetAllProducts(filter), Times.Once);
+        }
+
+        [Fact]
+        public void GetAll_NullParam_ThrowsInvalidDataException()
+        {
+            Assert.Throws<InvalidDataException>(() => _controller.GetAll(null));
+        }
+        
+        [Fact]
+        public void GetAll_NullParam_ThrowsExceptionMessage()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(null));
+            Assert.Equal("Filter cannot be null", ex.Message);
+        }
+        
+        [Fact]
+        public void GetAll_FilterPropLessOrEqualZero_ThrowsInvalidDataException()
+        {
+            var invalidFilter = new Filter(); 
+            invalidFilter.CurrentPage = -1;
+            invalidFilter.ItemsPrPage = 2;
+            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
+
+            invalidFilter.CurrentPage = 1;
+            invalidFilter.ItemsPrPage = -3;
+            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
+
+            invalidFilter.CurrentPage = 0;
+            invalidFilter.ItemsPrPage = 2;
+            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));        
+        }
+        
+        [Fact]
+        public void GetAll_FilterPageZero_ThrowsExceptionMessage()
+        {
+            var invalidFilter = new Filter {CurrentPage = 0};
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
+            Assert.Equal("Current page cannot be 0", ex.Message);
+        }
+        
+        [Fact]
+        public void GetAll_FilterPageLessThanZero_ThrowsExceptionMessage()
+        {
+            var invalidFilter = new Filter {CurrentPage = -1};
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
+            Assert.Equal("Current page cannot be less than 0", ex.Message);
+        }
+        
+        [Fact]
+        public void GetAll_FilterItemsLessThanZero_ThrowsExceptionMessage()
+        {
+            var invalidFilter = new Filter {CurrentPage = 1, ItemsPrPage = -1};
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
+            Assert.Equal("Items per page cannot be less than 0", ex.Message);
+        }
+        
+        #endregion
+        
+        #region getById
+        
+        [Fact]
+        public void ProductController_HasGetByIdMethod()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetById".Equals(m.Name));
+            Assert.NotNull(method);
+        }
+        
+        [Fact]
+        public void GetById_IsPublic()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetById".Equals(m.Name));
+            Assert.True(method is not null && method.IsPublic);
+        }
+        
+        
+        [Fact]
+        public void GetAllMethod_ReturnsProductAsActionResult()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "GetById".Equals(m.Name));
+            Assert.Equal(typeof(ActionResult<Product>).FullName, method?.ReturnType.FullName);
+        }
+
+        [Fact]
+        public void GetById_HasHttpGetAttribute()
+        {
+            var methodInfo = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => m.Name == "GetAll");
+            var attr = methodInfo.CustomAttributes
+                .FirstOrDefault(ca => ca.AttributeType.Name == "HttpGetAttribute");
+            Assert.NotNull(attr);
+        }
+
+        [Fact]
+        public void GetById_ParamLessThanZero_ThrowsInvalidDataException()
+        {
+            Assert.Throws<InvalidDataException>(() => _controller.GetById(-1));
+        }
+        
+        [Fact]
+        public void GetById_ParamLessThanZero_ThrowsExceptionMessage()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetById(-1));
+            Assert.Equal("id cannot be less than 0", ex.Message);
+        }
+        
+        #endregion
 
         #region create
 
@@ -110,15 +278,18 @@ namespace ProductAssignment.WebApi.Test.Controllers
             Assert.NotNull(attr);
         }
         
+        
+        //TODO test fails after added dto ?? (program works properly)
         [Fact]
         public void Post_CallsService_OnlyOnce()
         {
             //Arrange
-            var prod = new Product() {Name = "namee"};
+            var prod = new PostProductDto {Name = "namee"};
+            var product = new Product {Name = prod.Name};
             //Act
             _controller.Post(prod);
             //Assert
-            _mockService.Verify(s => s.Create(prod), Times.Once);
+            _mockService.Verify(s => s.Create(product), Times.Once);
         }
         #endregion
         

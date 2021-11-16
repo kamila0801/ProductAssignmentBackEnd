@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ProductAssignment.Core\ProductAssignment.Core.csproj" />
+      <ProjectReference Include="..\ProductAssignment.DataAccess.Test\ProductAssignment.DataAccess.Test.csproj" />
       <ProjectReference Include="..\ProductAssignment.DataAccess\ProductAssignment.DataAccess.csproj" />
       <ProjectReference Include="..\ProductAssignment.Domain\ProductAssignment.Domain.csproj" />
     </ItemGroup>

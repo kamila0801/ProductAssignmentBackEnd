@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using ProductAssignment.DataAccess.Entities;
 using ProductAssignment.Domain.IRepositories;
@@ -17,7 +18,7 @@ namespace ProductAssignment.DataAccess.Repositories
                 throw new InvalidDataException("Product Repository must have a dbContext");
             _ctx = ctx;
         }
-        public List<Product> FindAll()
+        public List<Product> FindAll(Filter filter)
         {
             return _ctx.Products
                 .Select(pe => new Product
@@ -25,7 +26,16 @@ namespace ProductAssignment.DataAccess.Repositories
                     Id = pe.Id,
                     Name = pe.Name
                 })
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPrPage)
+                .Take(filter.ItemsPrPage)
                 .ToList();
+        }
+        
+        public Product GetById(int id)
+        {
+            var entity = _ctx.Products
+                .FirstOrDefault(pe => pe.Id == id);
+            return (entity!=null ? new Product {Name = entity.Name, Id = entity.Id} : null);
         }
 
         public Product Create(Product newProduct)
@@ -38,5 +48,6 @@ namespace ProductAssignment.DataAccess.Repositories
             _ctx.SaveChanges();
             return newProduct;
         }
+        
     }
 }

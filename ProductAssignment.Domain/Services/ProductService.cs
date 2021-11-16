@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ProductAssignment.Core;
+using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using ProductAssignment.Domain.IRepositories;
 
@@ -16,11 +17,16 @@ namespace ProductAssignment.Domain.Services
                 throw new InvalidDataException("ProductRepository cannot be null");
             _repository = repository;
         }
-        public List<Product> GetAllProducts()
+        public List<Product> GetAllProducts(Filter filter)
         {
-            return _repository.FindAll();
+            return _repository.FindAll(filter);
         }
 
+        public Product GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
+        
         public Product Create(Product newProduct)
         {
             if (newProduct == null)

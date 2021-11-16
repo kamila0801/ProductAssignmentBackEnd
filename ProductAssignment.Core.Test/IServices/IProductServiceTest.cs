@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Moq;
+using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using Xunit;
 
@@ -15,13 +16,14 @@ namespace ProductAssignment.Core.Test
         }
 
         [Fact]
-        public void GetAllProducts_NoParams_ReturnsListOfAllProducts()
+        public void GetAllProducts_ReturnsListOfAllProducts()
         {
+            var filter = new Filter();
             var mock = new Mock<IProductService>();
-            mock.Setup(s => s.GetAllProducts())
+            mock.Setup(s => s.GetAllProducts(filter))
                 .Returns(new List<Product>());
             var service = mock.Object;
-            Assert.Equal(new List<Product>(), service.GetAllProducts());
+            Assert.Equal(new List<Product>(), service.GetAllProducts(filter));
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EntityFrameworkCore.Testing.Moq;
+using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using ProductAssignment.DataAccess.Entities;
 using ProductAssignment.DataAccess.Repositories;
@@ -42,6 +43,8 @@ namespace ProductAssignment.DataAccess.Test.Repositories
             Assert.Equal("Product Repository must have a dbContext", ex.Message);
         }
 
+        #region get all
+        
         [Fact]
         public void FindAll_GetAllProductsEntitiesInDbContext_AsListOfProducts()
         {
@@ -62,8 +65,28 @@ namespace ProductAssignment.DataAccess.Test.Repositories
                 })
                 .ToList();
             
-            Assert.Equal(expected, _repository.FindAll(), new Comparer());
+            Assert.Equal(expected, _repository.FindAll(new Filter{CurrentPage = 1, ItemsPrPage = 3}), new Comparer());
         }
+        
+        #endregion
+
+        #region get by id
+
+        [Fact]
+        public void GetById_GetProductEntityInDbContext_AsProduct()
+        {
+            var productEntity = new ProductEntity {Id = 1, Name = "one"};
+            _mockedDbContext.Set<ProductEntity>().AddRange(productEntity);
+            _mockedDbContext.SaveChanges();
+
+            var expected = new Product {Id = 1, Name = "one"};
+            
+            Assert.Equal(expected.Name, productEntity.Name);
+            Assert.Equal(expected.Id, productEntity.Id);
+        }
+        
+
+        #endregion
     }
 
     public class Comparer : IEqualityComparer<Product>

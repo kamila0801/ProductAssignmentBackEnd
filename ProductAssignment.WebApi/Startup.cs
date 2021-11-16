@@ -14,7 +14,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProductAssignment.Core;
 using ProductAssignment.DataAccess;
+using ProductAssignment.DataAccess.Entities;
 using ProductAssignment.DataAccess.Repositories;
+using ProductAssignment.DataAccess.Test;
 using ProductAssignment.Domain.IRepositories;
 using ProductAssignment.Domain.Services;
 
@@ -58,8 +60,7 @@ namespace ProductAssignment.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductAssignment.WebApi v1"));
                 
-                context.Database.EnsureDeleted(); //no database now
-                context.Database.EnsureCreated();
+                new DbSeeder(context).SeedDevelopment();
             }
 
             app.UseHttpsRedirection();
