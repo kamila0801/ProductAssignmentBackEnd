@@ -1,0 +1,6 @@
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/bin/Debug/net5.0/CoverletSourceRootsMapping
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/obj/Debug/net5.0/ProductAssignment.WebApi.Test.csproj.AssemblyReference.cache
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/obj/Debug/net5.0/ProductAssignment.WebApi.Test.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/obj/Debug/net5.0/ProductAssignment.WebApi.Test.AssemblyInfoInputs.cache
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/obj/Debug/net5.0/ProductAssignment.WebApi.Test.AssemblyInfo.cs
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.WebApi.Test/obj/Debug/net5.0/ProductAssignment.WebApi.Test.csproj.CoreCompileInputs.cache

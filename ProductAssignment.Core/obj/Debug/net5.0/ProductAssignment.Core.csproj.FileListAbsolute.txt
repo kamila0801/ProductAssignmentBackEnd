@@ -1,0 +1,12 @@
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/bin/Debug/net5.0/ProductAssignment.Core.deps.json
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/bin/Debug/net5.0/ProductAssignment.Core.dll
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/bin/Debug/net5.0/ref/ProductAssignment.Core.dll
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/bin/Debug/net5.0/ProductAssignment.Core.pdb
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.csproj.AssemblyReference.cache
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.AssemblyInfoInputs.cache
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.AssemblyInfo.cs
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.csproj.CoreCompileInputs.cache
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.dll
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ref/ProductAssignment.Core.dll
+/Users/kamila/Desktop/Computer Science/3rd semester/SDP/ProductAssignment/ProductAssignment.Core/obj/Debug/net5.0/ProductAssignment.Core.pdb
