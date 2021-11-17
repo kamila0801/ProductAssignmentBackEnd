@@ -6,6 +6,7 @@ using ProductAssignment.Core;
 using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
 using ProductAssignment.WebApi.Dtos;
+using ProductAssignment.WebApi.Dtos.Product;
 
 namespace ProductAssignment.WebApi.Controllers
 {

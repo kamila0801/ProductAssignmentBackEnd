@@ -10,6 +10,7 @@ using ProductAssignment.Core.Models;
 using ProductAssignment.DataAccess.Test.Repositories;
 using ProductAssignment.WebApi.Controllers;
 using ProductAssignment.WebApi.Dtos;
+using ProductAssignment.WebApi.Dtos.Product;
 using Xunit;
 
 namespace ProductAssignment.WebApi.Test.Controllers

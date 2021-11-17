@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.12" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="Moq" Version="4.16.1" />
@@ -12,14 +13,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ProductAssignment.Core\ProductAssignment.Core.csproj" />
       <ProjectReference Include="..\ProductAssignment.DataAccess.Test\ProductAssignment.DataAccess.Test.csproj" />
       <ProjectReference Include="..\ProductAssignment.DataAccess\ProductAssignment.DataAccess.csproj" />
       <ProjectReference Include="..\ProductAssignment.Domain\ProductAssignment.Domain.csproj" />
+      <ProjectReference Include="..\ProductAssignment.Security\ProductAssignment.Security.csproj" />
     </ItemGroup>
 
 </Project>

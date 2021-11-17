@@ -1,6 +1,6 @@
 using ProductAssignment.DataAccess.Entities;
 
-namespace ProductAssignment.DataAccess.Test
+namespace ProductAssignment.DataAccess
 {
     public class DbSeeder
     {
