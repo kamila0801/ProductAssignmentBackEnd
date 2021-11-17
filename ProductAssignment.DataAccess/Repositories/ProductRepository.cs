@@ -24,7 +24,9 @@ namespace ProductAssignment.DataAccess.Repositories
                 .Select(pe => new Product
                 {
                     Id = pe.Id,
-                    Name = pe.Name
+                    Name = pe.Name,
+                    Color = pe.Color,
+                    Price = pe.Price
                 })
                 .Skip((filter.CurrentPage - 1) * filter.ItemsPrPage)
                 .Take(filter.ItemsPrPage)
@@ -35,7 +37,9 @@ namespace ProductAssignment.DataAccess.Repositories
         {
             var entity = _ctx.Products
                 .FirstOrDefault(pe => pe.Id == id);
-            return (entity!=null ? new Product {Name = entity.Name, Id = entity.Id} : null);
+            return (entity!=null ? 
+                new Product {Name = entity.Name, Id = entity.Id, Color = entity.Color, Price = entity.Price} 
+                : null);
         }
 
         public Product Create(Product newProduct)
@@ -43,7 +47,9 @@ namespace ProductAssignment.DataAccess.Repositories
             _ctx.Products.Add(new ProductEntity
             {
                 Id = newProduct.Id,
-                Name = newProduct.Name
+                Name = newProduct.Name,
+                Color = newProduct.Color,
+                Price = newProduct.Price
             }).State = EntityState.Added;
             _ctx.SaveChanges();
             return newProduct;

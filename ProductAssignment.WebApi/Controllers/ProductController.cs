@@ -47,7 +47,12 @@ namespace ProductAssignment.WebApi.Controllers
         {
             try
             {
-                return Ok(_productService.Create(new Product{Name = productDto.Name}));
+                return Ok(_productService.Create(new Product
+                {
+                    Name = productDto.Name,
+                    Color = productDto.Color,
+                    Price = productDto.Price
+                }));
             }
             catch (Exception e)
             {

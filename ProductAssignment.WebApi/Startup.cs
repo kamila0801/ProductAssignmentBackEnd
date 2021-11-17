@@ -48,7 +48,18 @@ namespace ProductAssignment.WebApi
             services.AddDbContext<MainDbContext>(options =>
             {
                 options.UseSqlite("Data Source=main.db");
-            }); 
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Dev-cors", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +70,7 @@ namespace ProductAssignment.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductAssignment.WebApi v1"));
-                
+                app.UseCors("Dev-cors");
                 new DbSeeder(context).SeedDevelopment();
             }
 

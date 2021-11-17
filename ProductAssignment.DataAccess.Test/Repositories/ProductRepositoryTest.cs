@@ -50,9 +50,9 @@ namespace ProductAssignment.DataAccess.Test.Repositories
         {
             var list = new List<ProductEntity>
             {
-                new ProductEntity {Id = 1, Name = "first"},
-                new ProductEntity {Id = 2, Name = "second"},
-                new ProductEntity {Id = 3, Name = "third"}
+                new ProductEntity {Id = 1, Name = "first", Color = "blue", Price = 2.0},
+                new ProductEntity {Id = 2, Name = "second", Color = "blue", Price = 5.2},
+                new ProductEntity {Id = 3, Name = "third", Color = "green", Price = 2.0}
             };
             _mockedDbContext.Set<ProductEntity>().AddRange(list);
             _mockedDbContext.SaveChanges();
@@ -61,7 +61,9 @@ namespace ProductAssignment.DataAccess.Test.Repositories
                 .Select(pe => new Product
                 {
                     Id = pe.Id,
-                    Name = pe.Name
+                    Name = pe.Name,
+                    Color = pe.Color,
+                    Price = pe.Price
                 })
                 .ToList();
             
@@ -75,14 +77,14 @@ namespace ProductAssignment.DataAccess.Test.Repositories
         [Fact]
         public void GetById_GetProductEntityInDbContext_AsProduct()
         {
-            var productEntity = new ProductEntity {Id = 1, Name = "one"};
-            _mockedDbContext.Set<ProductEntity>().AddRange(productEntity);
+            var entity = new ProductEntity {Id = 1, Name = "one", Color = "blue", Price = 2.0};
+            
+            _mockedDbContext.Set<ProductEntity>().AddRange(entity);
             _mockedDbContext.SaveChanges();
 
-            var expected = new Product {Id = 1, Name = "one"};
+            var expected = new Product {Id = entity.Id, Name = entity.Name, Color = entity.Color, Price = entity.Price};
             
-            Assert.Equal(expected.Name, productEntity.Name);
-            Assert.Equal(expected.Id, productEntity.Id);
+            Assert.Equal(expected, _repository.GetById(1), new Comparer());
         }
         
 
@@ -97,7 +99,7 @@ namespace ProductAssignment.DataAccess.Test.Repositories
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
-            return x.Id == y.Id && x.Name == y.Name;
+            return x.Id == y.Id && x.Name == y.Name && x.Color == y.Color && x.Price.Equals(y.Price);
         }
 
         public int GetHashCode(Product obj)
