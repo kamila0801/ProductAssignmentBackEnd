@@ -59,11 +59,15 @@ namespace ProductAssignment.Domain.Test.Services
             var passedProduct = new Product()
             {
                 Name = "kuba",
+                Color = "col",
+                Price = 2.0
             };
             var expectedStudent = new Product
             {
                 Id = 1,
                 Name = "kuba",
+                Color = "col",
+                Price = 2.0
             };
             _mock.Setup(repo => repo.Create(passedProduct)).Returns(expectedStudent);
             var actualStudent = _service.Create(passedProduct);
@@ -115,10 +119,38 @@ namespace ProductAssignment.Domain.Test.Services
         {
             var invalidProduct = new Product()
             {
+                
             };
             void Actual() => _service.Create(invalidProduct);
             var exception = Assert.Throws<InvalidDataException>(Actual);
             Assert.Equal("Name must be specified", exception.Message);
+        }
+        
+        [Fact]
+        public void Create_PriceIsntGreaterThanZero_ThrowsInvalidDataException()
+        {
+            var invalidProduct = new Product()
+            {
+                Name = "glass",
+                Color = "blue",
+                Price = -9.0
+            };
+            void Actual() => _service.Create(invalidProduct);
+            Assert.Throws<InvalidDataException>(Actual);
+        }
+        
+        [Fact]
+        public void Create_PriceIsntGreaterThanZero_ThrowsInvalidDataExceptionWithMessage()
+        {
+            var invalidProduct = new Product()
+            {
+                Name = "glass",
+                Color = "blue",
+                Price = -9.0
+            };
+            void Actual() => _service.Create(invalidProduct);
+            var exception = Assert.Throws<InvalidDataException>(Actual);
+            Assert.Equal("Product price must me greater than 0", exception.Message);
         }
         #endregion
 

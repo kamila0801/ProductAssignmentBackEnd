@@ -7,6 +7,7 @@ using Moq;
 using ProductAssignment.Core;
 using ProductAssignment.Core.Filtering;
 using ProductAssignment.Core.Models;
+using ProductAssignment.DataAccess.Test.Repositories;
 using ProductAssignment.WebApi.Controllers;
 using ProductAssignment.WebApi.Dtos;
 using Xunit;
@@ -251,19 +252,76 @@ namespace ProductAssignment.WebApi.Test.Controllers
                 => ca.AttributeType.Name == "HttpPostAttribute");
             Assert.NotNull(attr);
         }
-        
-        
-        //TODO test fails after added dto ?? (program works properly)
+
         [Fact]
-        public void Post_CallsService_OnlyOnce()
+        public void PostMethod_NullParam_ThrowsInvalidDataException()
         {
-            //Arrange
-            var prod = new PostProductDto {Name = "namee"};
-            var product = new Product {Name = prod.Name};
-            //Act
-            _controller.Post(prod);
-            //Assert
-            _mockService.Verify(s => s.Create(product), Times.Once);
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.Post(null));
+            Assert.Equal("product cannot be null", ex.Message);
+        }
+
+        [Fact]
+        public void PostMethod_NameIsNull_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            {
+                Color = "blue",
+                Price = 2.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
+        }
+        
+        
+        [Fact]
+        public void PostMethod_NameIsEmpty_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            { Name = "",
+                Color = "blue",
+                Price = 2.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
+        }
+        
+        [Fact]
+        public void PostMethod_PriceIsEqualZero_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            { Name = "name",
+                Color = "blue",
+                Price = 0.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
+        }
+        
+        [Fact]
+        public void PostMethod_PriceIsSmallerThanZero_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            { Name = "name",
+                Color = "blue",
+                Price = -7.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
+        }
+        
+        [Fact]
+        public void PostMethod_ColorIsEmpty_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            { Name = "name",
+                Color = "",
+                Price = 4.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
+        }
+        [Fact]
+        public void PostMethod_ColorIsNull_ReturnBadRequest()
+        {
+            var product = new PostProductDto
+            { Name = "name", Price = 4.0
+            };
+            Assert.Equal(400, (_controller.Post(product).Result as ObjectResult)?.StatusCode);
         }
         #endregion
 

@@ -35,6 +35,8 @@ namespace ProductAssignment.Domain.Services
                 throw new InvalidDataException("Id cannot be specified");
             if(newProduct.Name==null)
                 throw new InvalidDataException("Name must be specified");
+            if(newProduct.Price<=0)
+                throw new InvalidDataException("Product price must me greater than 0");
             return _repository.Create(newProduct);
         }
 

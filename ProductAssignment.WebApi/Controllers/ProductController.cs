@@ -45,6 +45,15 @@ namespace ProductAssignment.WebApi.Controllers
         [HttpPost]
         public ActionResult<Product> Post([FromBody] PostProductDto productDto)
         {
+            if (productDto == null)
+                throw new InvalidDataException("product cannot be null");
+            if (productDto.Name is null or "")
+                return BadRequest("name cannot be empty");
+            if (productDto.Price <= 0)
+                return BadRequest("price must be greater than 0");
+            if (productDto.Color is null or "")
+                return BadRequest("color cannot be empty");
+                
             try
             {
                 return Ok(_productService.Create(new Product
