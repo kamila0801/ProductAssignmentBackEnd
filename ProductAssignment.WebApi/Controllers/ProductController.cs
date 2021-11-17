@@ -26,11 +26,11 @@ namespace ProductAssignment.WebApi.Controllers
             if (filter == null)
                 throw new InvalidDataException("Filter cannot be null");
             if (filter.CurrentPage == 0)
-                throw new InvalidDataException("Current page cannot be 0");
+                return BadRequest("Current page cannot be 0");
             if (filter.CurrentPage < 0)
-                throw new InvalidDataException("Current page cannot be less than 0");
+                return BadRequest("Current page cannot be less than 0");
             if (filter.ItemsPrPage < 0)
-                throw new InvalidDataException("Items per page cannot be less than 0");
+                return BadRequest("Items per page cannot be less than 0");
             return Ok(_productService.GetAllProducts(filter));
         }
         
@@ -38,7 +38,7 @@ namespace ProductAssignment.WebApi.Controllers
         public ActionResult<Product> GetById(int id)
         {
             if (id < 0)
-                throw new InvalidDataException("id cannot be less than 0");
+                return BadRequest("id cannot be less than 0");
             return Ok(_productService.GetById(id));
         }
 
@@ -59,7 +59,7 @@ namespace ProductAssignment.WebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
-        
+
         [HttpDelete("{id}")]
         public ActionResult<PostProductDto> DeleteProduct(int id)
         {
@@ -71,6 +71,30 @@ namespace ProductAssignment.WebApi.Controllers
                 Price = product.Price
             };
             return Ok(dto);
+        }
+
+        [HttpPut]
+        public ActionResult<Product> Update([FromBody] PutProductDto productDto)
+        {
+            if (productDto == null)
+                throw new InvalidDataException("product to update cannot be null");
+            if (productDto.Id < 0)
+                return BadRequest("id cannot be less than 0");
+            if (productDto.Name==null | productDto.Name.Equals(""))
+                return BadRequest("name cannot be empty");
+            if (productDto.Price <= 0)
+                return BadRequest("price must be greater than 0");
+            if (productDto.Color==null | productDto.Color.Equals(""))
+                return BadRequest("color cannot be empty");
+            
+            return _productService.Update(new Product
+            {
+                Id = productDto.Id,
+                Name = productDto.Name,
+                Color = productDto.Color,
+                Price = productDto.Price
+            });
+
         }
     }
 }

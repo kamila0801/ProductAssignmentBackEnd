@@ -15,16 +15,33 @@ namespace ProductAssignment.Core.Test
             Assert.NotNull(service);
         }
 
+        #region get all
         [Fact]
         public void GetAllProducts_ReturnsListOfAllProducts()
-        {
+        { 
             var filter = new Filter();
-            var mock = new Mock<IProductService>();
+            var mock = new Mock<IProductService>(); 
             mock.Setup(s => s.GetAllProducts(filter))
-                .Returns(new List<Product>());
-            var service = mock.Object;
+                .Returns(new List<Product>()); 
+            var service = mock.Object; 
             Assert.Equal(new List<Product>(), service.GetAllProducts(filter));
         }
+        #endregion
+        
+        
+        #region update
+
+        [Fact]
+        public void UpdateProduct_ReturnsUpdatedProduct()
+        {
+            var product = new Product {Id = 1, Name = "tom", Color = "blue", Price = 21.05};
+            var mock = new Mock<IProductService>();
+            mock.Setup(s => s.Update(product))
+                .Returns(product);
+            var service = mock.Object;
+            Assert.Equal(product, service.Update(product));
+        }
+        #endregion
         
         #region Delete Test
         [Fact]

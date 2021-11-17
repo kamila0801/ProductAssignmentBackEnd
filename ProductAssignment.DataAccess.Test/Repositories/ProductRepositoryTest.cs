@@ -86,9 +86,9 @@ namespace ProductAssignment.DataAccess.Test.Repositories
             
             Assert.Equal(expected, _repository.GetById(1), new Comparer());
         }
-        
 
         #endregion
+        
     }
 
     public class Comparer : IEqualityComparer<Product>

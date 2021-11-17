@@ -71,5 +71,19 @@ namespace ProductAssignment.DataAccess.Repositories
             _ctx.SaveChanges();
             return productToDelete;
         }
+
+        public Product Update(Product product)
+        {
+            _ctx.Attach(new ProductEntity
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Color = product.Color,
+                Price = product.Price
+            }).State = EntityState.Modified;
+            _ctx.SaveChanges();
+
+            return product;
+        }
     }
 }

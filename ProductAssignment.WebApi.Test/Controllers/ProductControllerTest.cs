@@ -142,46 +142,27 @@ namespace ProductAssignment.WebApi.Test.Controllers
             var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(null));
             Assert.Equal("Filter cannot be null", ex.Message);
         }
-        
-        [Fact]
-        public void GetAll_FilterPropLessOrEqualZero_ThrowsInvalidDataException()
-        {
-            var invalidFilter = new Filter(); 
-            invalidFilter.CurrentPage = -1;
-            invalidFilter.ItemsPrPage = 2;
-            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
 
-            invalidFilter.CurrentPage = 1;
-            invalidFilter.ItemsPrPage = -3;
-            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
-
-            invalidFilter.CurrentPage = 0;
-            invalidFilter.ItemsPrPage = 2;
-            Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));        
-        }
-        
         [Fact]
-        public void GetAll_FilterPageZero_ThrowsExceptionMessage()
+        public void GetAll_FilterPageZero_ReturnsBadRequest()
         {
             var invalidFilter = new Filter {CurrentPage = 0};
-            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
-            Assert.Equal("Current page cannot be 0", ex.Message);
+            Assert.Equal(400, (_controller.GetAll(invalidFilter).Result as ObjectResult)?.StatusCode);
         }
         
         [Fact]
-        public void GetAll_FilterPageLessThanZero_ThrowsExceptionMessage()
+        public void GetAll_FilterPageLessThanZero_ReturnsBadRequest()
         {
             var invalidFilter = new Filter {CurrentPage = -1};
-            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
-            Assert.Equal("Current page cannot be less than 0", ex.Message);
+            Assert.Equal(400, (_controller.GetAll(invalidFilter).Result as ObjectResult)?.StatusCode);
+
         }
         
         [Fact]
-        public void GetAll_FilterItemsLessThanZero_ThrowsExceptionMessage()
+        public void GetAll_FilterItemsLessThanZero_ReturnsBadRequest()
         {
             var invalidFilter = new Filter {CurrentPage = 1, ItemsPrPage = -1};
-            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetAll(invalidFilter));
-            Assert.Equal("Items per page cannot be less than 0", ex.Message);
+            Assert.Equal(400, (_controller.GetAll(invalidFilter).Result as ObjectResult)?.StatusCode);
         }
         
         #endregion
@@ -228,18 +209,11 @@ namespace ProductAssignment.WebApi.Test.Controllers
         }
 
         [Fact]
-        public void GetById_ParamLessThanZero_ThrowsInvalidDataException()
+        public void GetById_ParamLessThanZero_ReturnsBadRequest()
         {
-            Assert.Throws<InvalidDataException>(() => _controller.GetById(-1));
+            Assert.Equal(400, (_controller.GetById(-1).Result as ObjectResult)?.StatusCode);
         }
-        
-        [Fact]
-        public void GetById_ParamLessThanZero_ThrowsExceptionMessage()
-        {
-            var ex = Assert.Throws<InvalidDataException>(() => _controller.GetById(-1));
-            Assert.Equal("id cannot be less than 0", ex.Message);
-        }
-        
+
         #endregion
 
         #region create
@@ -291,6 +265,82 @@ namespace ProductAssignment.WebApi.Test.Controllers
             //Assert
             _mockService.Verify(s => s.Create(product), Times.Once);
         }
+        #endregion
+
+        #region update
+
+        [Fact]
+        public void ProductController_HasUpdateMethod()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "Update".Equals(m.Name));
+            Assert.NotNull(method);
+        }
+        
+        [Fact]
+        public void UpdateMethod_IsPublic()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "Update".Equals(m.Name));
+            Assert.True(method is not null && method.IsPublic);
+        }
+        
+        
+        [Fact]
+        public void UpdateMethod_ReturnsProductAsActionResult()
+        {
+            var method = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => "Update".Equals(m.Name));
+            Assert.Equal(typeof(ActionResult<Product>).FullName, method?.ReturnType.FullName);
+        }
+
+        [Fact]
+        public void UpdateMethod_HasHttpPutAttribute()
+        {
+            var methodInfo = typeof(ProductController)
+                .GetMethods()
+                .FirstOrDefault(m => m.Name == "Update");
+            var attr = methodInfo.CustomAttributes
+                .FirstOrDefault(ca => ca.AttributeType.Name == "HttpPutAttribute");
+            Assert.NotNull(attr);
+        }
+
+        [Fact]
+        public void UpdateMethod_NullParam_ThrowsInvalidDataException()
+        {
+            var ex = Assert.Throws<InvalidDataException>(() => _controller.Update(null));
+            Assert.Equal("product to update cannot be null", ex.Message);
+        }
+        
+        [Fact]
+        public void UpdateMethod_InvalidProductProperties_ReturnBadRequest()
+        {
+            var product = new PutProductDto
+            {
+                Id = -1,
+                Name = "tom",
+                Color = "blue",
+                Price = 2.0
+            };
+            
+            Assert.Equal(400, (_controller.Update(product).Result as ObjectResult)?.StatusCode);
+
+            product.Id = 1;
+            product.Name = "";
+            Assert.Equal(400, (_controller.Update(product).Result as ObjectResult)?.StatusCode);
+
+            product.Name = "tom";
+            product.Color = "";
+            Assert.Equal(400, (_controller.Update(product).Result as ObjectResult)?.StatusCode);
+
+            product.Color = "blue";
+            product.Price = -1;
+            Assert.Equal(400, (_controller.Update(product).Result as ObjectResult)?.StatusCode);
+        }
+
         #endregion
         
     }

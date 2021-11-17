@@ -10,5 +10,6 @@ namespace ProductAssignment.Core
         Product GetById(int id);
         Product Create(Product newProduct);
         Product Delete(int productId);
+        Product Update(Product product);
     }
 }

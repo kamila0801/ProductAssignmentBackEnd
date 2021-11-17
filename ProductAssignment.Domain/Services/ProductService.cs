@@ -42,5 +42,10 @@ namespace ProductAssignment.Domain.Services
         {
             return _repository.Delete(productId);
         }
+
+        public Product Update(Product product)
+        {
+            return _repository.Update(product);
+        }
     }
 }
