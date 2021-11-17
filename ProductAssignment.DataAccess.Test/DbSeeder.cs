@@ -34,6 +34,36 @@ namespace ProductAssignment.DataAccess.Test
                 Color = "yellow",
                 Price = 13.00
             });
+            _ctx.Products.Add(new ProductEntity
+            {
+                Name = "happy lego",
+                Color = "yellow",
+                Price = 13.00
+            });
+            _ctx.Products.Add(new ProductEntity
+            {
+                Name = "sad lego",
+                Color = "blue",
+                Price = 7.50
+            });
+            _ctx.Products.Add(new ProductEntity
+            {
+                Name = "small lego",
+                Color = "black",
+                Price = 5.00
+            });
+            _ctx.Products.Add(new ProductEntity
+            {
+                Name = "big lego",
+                Color = "white",
+                Price = 13.00
+            });
+            _ctx.Products.Add(new ProductEntity
+            {
+                Name = "random lego",
+                Color = "blue",
+                Price = 23.00
+            });
             _ctx.SaveChanges();
         }
         
