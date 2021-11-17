@@ -54,6 +54,22 @@ namespace ProductAssignment.DataAccess.Repositories
             _ctx.SaveChanges();
             return newProduct;
         }
-        
+
+        public Product Delete(int productId)
+        {
+            var productToDelete = _ctx.Products
+                .Select(pe => new Product
+                {
+                    Id = pe.Id,
+                    Name = pe.Name,
+                    Color = pe.Color,
+                    Price = pe.Price
+                    
+                })
+                .FirstOrDefault(p => p.Id == productId);
+            _ctx.Products.Remove(new ProductEntity() {Id = productId});
+            _ctx.SaveChanges();
+            return productToDelete;
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace ProductAssignment.Core
         List<Product> GetAllProducts(Filter filter);
         Product GetById(int id);
         Product Create(Product newProduct);
-        
+        Product Delete(int productId);
     }
 }

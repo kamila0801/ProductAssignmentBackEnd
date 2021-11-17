@@ -9,6 +9,6 @@ namespace ProductAssignment.Domain.IRepositories
         List<Product> FindAll(Filter filter);
         Product GetById(int id);
         Product Create(Product newProduct);
-        
+        Product Delete(int productId);
     }
 }

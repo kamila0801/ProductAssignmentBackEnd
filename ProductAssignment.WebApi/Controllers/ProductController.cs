@@ -59,5 +59,18 @@ namespace ProductAssignment.WebApi.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpDelete("{id}")]
+        public ActionResult<PostProductDto> DeleteProduct(int id)
+        {
+            var product = _productService.Delete(id);
+            var dto = new PostProductDto()
+            {
+                Name = product.Name,
+                Color = product.Color,
+                Price = product.Price
+            };
+            return Ok(dto);
+        }
     }
 }

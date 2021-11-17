@@ -107,6 +107,6 @@ namespace ProductAssignment.DataAccess.Test.Repositories
             return HashCode.Combine(obj.Id, obj.Name);
         }
     }
-    
-    
+
+
 }

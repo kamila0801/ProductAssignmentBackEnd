@@ -1,5 +1,6 @@
 using EntityFrameworkCore.Testing.Moq;
 using Microsoft.EntityFrameworkCore;
+using ProductAssignment.Core.Models;
 using ProductAssignment.DataAccess.Entities;
 using Xunit;
 

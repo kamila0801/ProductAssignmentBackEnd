@@ -37,5 +37,10 @@ namespace ProductAssignment.Domain.Services
                 throw new InvalidDataException("Name must be specified");
             return _repository.Create(newProduct);
         }
+
+        public Product Delete(int productId)
+        {
+            return _repository.Delete(productId);
+        }
     }
 }

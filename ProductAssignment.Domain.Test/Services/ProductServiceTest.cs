@@ -121,6 +121,42 @@ namespace ProductAssignment.Domain.Test.Services
             Assert.Equal("Name must be specified", exception.Message);
         }
         #endregion
+
+        #region Delete
+        [Fact]
+        public void ProductService_Delete_ParameterProduct_ReturnProduct()
+        {
+            // Arrange
+            var product = new Product()
+            {
+                Id = 1,
+                Name = "Laszlo"
+            };
+            _mock.Setup(r => r.GetById(product.Id))
+                .Returns(product);
+            _mock.Setup(r => r.Delete(product.Id))
+                .Returns(product);
+            // Act
+            var actual = _service.Delete(product.Id);
+            // Assert
+            Assert.Equal(product,actual);
+        }
         
+        [Fact]
+        public void DeleteProduct_WithParams_CallsProductRepositoryOnce()
+        {
+            
+            var productId = (int) 1;
+            
+            //Act
+            _service.Delete(productId);
+            
+            //Assert
+            _mock.Verify(r => r.Delete(productId), Times.Once);
+        }
+        
+
+        #endregion
+
     }
 }

@@ -25,5 +25,18 @@ namespace ProductAssignment.Core.Test
             var service = mock.Object;
             Assert.Equal(new List<Product>(), service.GetAllProducts(filter));
         }
+        
+        #region Delete Test
+        [Fact]
+        public void DeleteProduct_WithParams_ReturnsDeletedProduct()
+        {
+            var serviceMock = new Mock<IProductService>();
+            var pId = 1;
+            serviceMock
+                .Setup(s => s.Delete(pId))
+                .Returns(new Product());
+            Assert.NotNull(serviceMock.Object);
+        }
+        #endregion
     }
 }
